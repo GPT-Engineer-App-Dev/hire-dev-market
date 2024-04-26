@@ -5,15 +5,27 @@ import { useState } from 'react';
 const Index = () => {
   const [developerQuery, setDeveloperQuery] = useState('');
   const [jobQuery, setJobQuery] = useState('');
+  const [developers, setDevelopers] = useState(Array.from({ length: 8 }).map((_, index) => ({
+    id: index + 1,
+    name: `John Doe ${index + 1}`,
+    skills: 'JavaScript, React',
+    description: 'Experienced Frontend Developer with a demonstrated history of working in the web development industry.'
+  })));
+  const [jobs, setJobs] = useState(Array.from({ length: 5 }).map((_, index) => ({
+    id: index + 1,
+    title: 'Frontend Developer',
+    company: `Company ${index + 1}`,
+    description: 'Looking for an experienced frontend developer to join our dynamic team.'
+  })));
 
   const handleDeveloperSearch = () => {
-    // Placeholder for developer search functionality
-    console.log(`Searching for developers with skill: ${developerQuery}`);
+    const filteredDevelopers = developers.filter(dev => dev.skills.toLowerCase().includes(developerQuery.toLowerCase()));
+    setDevelopers(filteredDevelopers);
   };
 
   const handleJobSearch = () => {
-    // Placeholder for job search functionality
-    console.log(`Searching for jobs with title: ${jobQuery}`);
+    const filteredJobs = jobs.filter(job => job.title.toLowerCase().includes(jobQuery.toLowerCase()) || job.company.toLowerCase().includes(jobQuery.toLowerCase()));
+    setJobs(filteredJobs);
   };
 
   return (
@@ -35,17 +47,17 @@ const Index = () => {
                 <Button leftIcon={<FaSearch />} colorScheme="blue" size="lg" onClick={handleDeveloperSearch}>Search</Button>
               </HStack>
               <Flex wrap="wrap" justifyContent="space-between">
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <Link href={`/developer/${index + 1}`} style={{ textDecoration: 'none' }}>
+                {developers.map(developer => (
+                  <Link href={`/developer/${developer.id}`} style={{ textDecoration: 'none' }}>
                     <Box p={5} borderWidth="1px" borderRadius="lg" width="45%" mb={5}>
                       <Flex alignItems="center">
-                        <Image borderRadius="full" boxSize="50px" src={`https://i.pravatar.cc/150?img=${index + 1}`} alt="Profile" />
+                        <Image borderRadius="full" boxSize="50px" src={`https://i.pravatar.cc/150?img=${developer.id}`} alt="Profile" />
                         <Box ml={3}>
-                          <Text fontWeight="bold">John Doe {index + 1}</Text>
-                          <Text fontSize="sm">JavaScript, React</Text>
+                          <Text fontWeight="bold">{developer.name}</Text>
+                          <Text fontSize="sm">{developer.skills}</Text>
                         </Box>
                       </Flex>
-                      <Text mt={3}>Experienced Frontend Developer with a demonstrated history of working in the web development industry.</Text>
+                      <Text mt={3}>{developer.description}</Text>
                     </Box>
                   </Link>
                 ))}
@@ -59,16 +71,16 @@ const Index = () => {
                 <Button leftIcon={<FaSearch />} colorScheme="blue" size="lg" onClick={handleJobSearch}>Search</Button>
               </HStack>
               <Flex wrap="wrap" justifyContent="space-between">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Link href={`/job/${index + 1}`} style={{ textDecoration: 'none' }}>
+                {jobs.map(job => (
+                  <Link href={`/job/${job.id}`} style={{ textDecoration: 'none' }}>
                     <Box p={5} borderWidth="1px" borderRadius="lg" width="45%" mb={5}>
                       <Flex alignItems="center">
                         <Box ml={3}>
-                          <Text fontWeight="bold">Frontend Developer</Text>
-                          <Text fontSize="sm">Company {index + 1}</Text>
+                          <Text fontWeight="bold">{job.title}</Text>
+                          <Text fontSize="sm">{job.company}</Text>
                         </Box>
                       </Flex>
-                      <Text mt={3}>Looking for an experienced frontend developer to join our dynamic team.</Text>
+                      <Text mt={3}>{job.description}</Text>
                     </Box>
                   </Link>
                 ))}
