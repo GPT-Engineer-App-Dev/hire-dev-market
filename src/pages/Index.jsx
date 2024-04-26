@@ -5,27 +5,38 @@ import { useState } from 'react';
 const Index = () => {
   const [developerQuery, setDeveloperQuery] = useState('');
   const [jobQuery, setJobQuery] = useState('');
-  const [developers, setDevelopers] = useState(Array.from({ length: 8 }).map((_, index) => ({
+  const initialDevelopers = Array.from({ length: 8 }).map((_, index) => ({
     id: index + 1,
     name: `John Doe ${index + 1}`,
     skills: 'JavaScript, React',
     description: 'Experienced Frontend Developer with a demonstrated history of working in the web development industry.'
-  })));
-  const [jobs, setJobs] = useState(Array.from({ length: 5 }).map((_, index) => ({
+  }));
+  const initialJobs = Array.from({ length: 5 }).map((_, index) => ({
     id: index + 1,
     title: 'Frontend Developer',
     company: `Company ${index + 1}`,
     description: 'Looking for an experienced frontend developer to join our dynamic team.'
-  })));
+  }));
+
+  const [developers, setDevelopers] = useState(initialDevelopers);
+  const [jobs, setJobs] = useState(initialJobs);
 
   const handleDeveloperSearch = () => {
-    const filteredDevelopers = developers.filter(dev => dev.skills.toLowerCase().includes(developerQuery.toLowerCase()));
-    setDevelopers(filteredDevelopers);
+    if (developerQuery === '') {
+      setDevelopers(initialDevelopers);
+    } else {
+      const filteredDevelopers = initialDevelopers.filter(dev => dev.skills.toLowerCase().includes(developerQuery.toLowerCase()));
+      setDevelopers(filteredDevelopers);
+    }
   };
 
   const handleJobSearch = () => {
-    const filteredJobs = jobs.filter(job => job.title.toLowerCase().includes(jobQuery.toLowerCase()) || job.company.toLowerCase().includes(jobQuery.toLowerCase()));
-    setJobs(filteredJobs);
+    if (jobQuery === '') {
+      setJobs(initialJobs);
+    } else {
+      const filteredJobs = initialJobs.filter(job => job.title.toLowerCase().includes(jobQuery.toLowerCase()) || job.company.toLowerCase().includes(jobQuery.toLowerCase()));
+      setJobs(filteredJobs);
+    }
   };
 
   return (
